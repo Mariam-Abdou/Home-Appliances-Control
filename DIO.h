@@ -2,10 +2,11 @@
 #define DIO_H
 
 #include <stdint.h>
-#include "TM4C123GH6PM.h"  //This file contains essential definitions and declarations that help you program the microcontroller. 
-                           //(Hardware Constants , Interrupt Definitions ,Register and Peripheral Definitions,Clock System Configuration,GPIO Pin Configurations)
+#include "TM4C123GH6PM.h"  
 
-// Define direction constants for Input and Output
+
+// Define direction constants
+
 #define Output 1
 #define Input  0
 
@@ -14,6 +15,7 @@
 
 #define PullUp 1
 #define PullDown 0
+
 // Pin mask values (example for Pin0 and Pin1)
 //These macros represent individual pins as bit masks. In microcontroller programming,
 // registers are often manipulated at the bit level to control specific pins of a GPIO port.
@@ -28,8 +30,6 @@
 #define Pin7   (1U << 7)
 
 // GPIO port base addresses
-//Each port (e.g., A, B, C, etc.) is managed by a separate set of registers. 
-//The base address indicates the start of these registers, and offsets are added to access specific functionalities within the port (like mode settings, output data, etc.).
 #define GPIO_PORTA_BASE  0x40004000
 #define GPIO_PORTB_BASE  0x40005000
 #define GPIO_PORTC_BASE  0x40006000
@@ -46,11 +46,11 @@
 #define GPIO_PORT_DATA_BITS_R(port_base) ((volatile uint32_t *)(port_base))           // Data bits register
 
 // Function prototypes
-void dio_init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t digital); //initlization 
-uint8_t dio_readpin(char port, uint8_t pin);//Reads the current state of a pin.
-uint8_t dio_readport(char port);
-void dio_writepin(char port, uint8_t pin, uint8_t value); //Sets a pin HIGH or LOW.
-void dio_writeport(char port, uint8_t value);
+void DIO_Init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t digital); //initlization 
+uint8_t DIO_ReadPin(char port, uint8_t pin);
+uint8_t DIO_ReadPort(char port);
+void DIO_WritePin(char port, uint8_t pin, uint8_t value);
+void DIO_WritePort(char port, uint8_t value);
 
 
 #endif // DIO_H

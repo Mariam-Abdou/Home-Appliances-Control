@@ -21,7 +21,7 @@ uint8_t ctz(uint32_t value) {
 }
 
 // Function to initialize a port and pins
-void dio_init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t digital) {
+void DIO_Init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t digital) {
     uint32_t port_base = 0;
 
     // Select base address based on port letter
@@ -73,7 +73,7 @@ void dio_init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t 
 }
 
 // Function to read a specific pin
-uint8_t dio_readpin(char port, uint8_t pin) {
+uint8_t DIO_ReadPin(char port, uint8_t pin) {
     uint32_t port_base = 0;
 
     // Select base address based on port letter
@@ -93,7 +93,7 @@ uint8_t dio_readpin(char port, uint8_t pin) {
 }
 
 // Function to read the entire port
-uint8_t dio_readport(char port) {
+uint8_t DIO_ReadPort(char port) {
     uint32_t port_base = 0;
 
     // Select base address based on port letter
@@ -112,7 +112,7 @@ uint8_t dio_readport(char port) {
 }
 
 // Function to write to a specific pin
-void dio_writepin(char port, uint8_t pin, uint8_t value) {
+void DIO_WritePin(char port, uint8_t pin, uint8_t value) {
     uint32_t port_base = 0;
 
     // Select base address based on port letter
@@ -140,7 +140,7 @@ void dio_writepin(char port, uint8_t pin, uint8_t value) {
 
 
 // Function to write to the entire port
-void dio_writeport(char port, uint8_t value) {
+void DIO_WritePort(char port, uint8_t value) {
     uint32_t port_base = 0;
 
     // Select base address based on port letter
