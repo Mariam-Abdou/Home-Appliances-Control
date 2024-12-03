@@ -2,34 +2,36 @@
 #define DIO_H
 
 #include <stdint.h>
-#include "TM4C123GH6PM.h"  //This file contains essential definitions and declarations that help you program the microcontroller. 
-                           //(Hardware Constants , Interrupt Definitions ,Register and Peripheral Definitions,Clock System Configuration,GPIO Pin Configurations)
+#include "TM4C123GH6PM.h"  
 
-// Define direction constants for Input and Output
-#define Output 1
-#define Input  0
+// Define the direction of a pin
+#define OUTPUT 1
+#define INPUT  0
 
-#define Digital 1
-#define Analog 0
+// Define the mode of a pin
+#define DIGITAL 1
+#define ANALOG 0
 
-#define PullUp 1
-#define PullDown 0
-// Pin mask values (example for Pin0 and Pin1)
-//These macros represent individual pins as bit masks. In microcontroller programming,
-// registers are often manipulated at the bit level to control specific pins of a GPIO port.
-// These definitions make it easy to refer to individual pins using their names (Pin0, Pin1, etc.) rather than raw numbers.
-#define Pin0   (1U << 0)
-#define Pin1   (1U << 1)
-#define Pin2   (1U << 2)
-#define Pin3   (1U << 3)
-#define Pin4   (1U << 4)
-#define Pin5   (1U << 5)
-#define Pin6   (1U << 6)
-#define Pin7   (1U << 7)
+// Define the pull-up or pull-down of a pin
+#define PULL_UP 1
+#define PULL_DOWN 0
 
-// GPIO port base addresses
-//Each port (e.g., A, B, C, etc.) is managed by a separate set of registers. 
-//The base address indicates the start of these registers, and offsets are added to access specific functionalities within the port (like mode settings, output data, etc.).
+// Define the unlock code
+#define GPIO_LOCK_KEY 0x4C4F434B
+
+
+
+// Define the pins
+#define PIN0 0
+#define PIN1 1
+#define PIN2 2
+#define PIN3 3
+#define PIN4 4
+#define PIN5 5
+#define PIN6 6
+#define PIN7 7
+
+// Define the base addresses for each port
 #define GPIO_PORTA_BASE  0x40004000
 #define GPIO_PORTB_BASE  0x40005000
 #define GPIO_PORTC_BASE  0x40006000
@@ -44,12 +46,13 @@
 #define GPIO_PORT_LOCK_R(port_base)      (*(volatile uint32_t *)(port_base + 0x520))  // Lock register
 #define GPIO_PORT_CR_R(port_base)        (*(volatile uint32_t *)(port_base + 0x524))  // Commit register
 #define GPIO_PORT_DATA_BITS_R(port_base) ((volatile uint32_t *)(port_base))           // Data bits register
+#define GPIO_PORT_DATA_R(port_base)      (*(volatile uint32_t *)(port_base + 0x3FC)) // Data register
 
 // Function prototypes
-void dio_init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t digital); //initlization 
-uint8_t dio_readpin(char port, uint8_t pin);//Reads the current state of a pin.
+void dio_init(char port, uint8_t pins, uint8_t direction, uint8_t pull, uint8_t digital);  
+uint8_t dio_readpin(char port, uint8_t pin);
 uint8_t dio_readport(char port);
-void dio_writepin(char port, uint8_t pin, uint8_t value); //Sets a pin HIGH or LOW.
+void dio_writepin(char port, uint8_t pin, uint8_t value);
 void dio_writeport(char port, uint8_t value);
 
 
