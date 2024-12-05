@@ -46,12 +46,36 @@ void dio_init(char port, uint8_t pin, uint8_t direction, uint8_t pull, uint8_t d
     else
         SET_BIT(GPIO_PORT_DIR_R(port_base), pin);  
     
+        /*if (direction == INPUT) {
+    if (pull == PULL_UP) {
+        SET_BIT(GPIO_PORT_PUR_R(port_base), pin);  // Enable pull-up
+        CLEAR_BIT(GPIO_PORT_PDR_R(port_base), pin); // Disable pull-down
+    } else if (pull == PULL_DOWN) {
+        SET_BIT(GPIO_PORT_PDR_R(port_base), pin);  // Enable pull-down
+        CLEAR_BIT(GPIO_PORT_PUR_R(port_base), pin); // Disable pull-up
+    } else {
+        CLEAR_BIT(GPIO_PORT_PUR_R(port_base), pin); // Disable pull-up
+        CLEAR_BIT(GPIO_PORT_PDR_R(port_base), pin); // Disable pull-down
+    }
+}*/
+
 
     // Set the mode of the pin (digital or analog)
     if(DIGITAL)
         SET_BIT(GPIO_PORT_DEN_R(port_base), pin);
     else
         CLEAR_BIT(GPIO_PORT_DEN_R(port_base), pin);
+
+    /*
+if (digital == DIGITAL) {
+    SET_BIT(GPIO_PORT_DEN_R(port_base), pin);
+    CLEAR_BIT(GPIO_PORT_AMSEL_R(port_base), pin); // Disable analog functionality
+} else {
+    CLEAR_BIT(GPIO_PORT_DEN_R(port_base), pin);
+    SET_BIT(GPIO_PORT_AMSEL_R(port_base), pin);  // Enable analog functionality
+}
+*/
+
 }
 
 
@@ -93,6 +117,7 @@ void dio_writepin(char port, uint8_t pin, uint8_t value) {
 
     // Write the value to the pin
     GPIO_PORT_DATA_BITS_R(port_base)[pin] = value;
+
 
 }
 
