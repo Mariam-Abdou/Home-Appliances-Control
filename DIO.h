@@ -2,7 +2,7 @@
 #define DIO_H
 
 #include <stdint.h>
-#include "TM4C123GH6PM.h"  
+#include "tm4c123gh6pm.h"  
 
 // Define the direction of a pin
 #define OUTPUT 1
