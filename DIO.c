@@ -38,7 +38,7 @@ void dio_init(char port, uint8_t pin, uint8_t direction, uint8_t pull, uint8_t d
         CLEAR_BIT(GPIO_PORT_DIR_R(port_base), pin);  
 
         // Set the pull-up or pull-down
-        if(pull == PULL_UP)
+        if(pull)
             SET_BIT(GPIO_PORT_PUR_R(port_base), pin);
         else
             CLEAR_BIT(GPIO_PORT_PUR_R(port_base), pin);
@@ -46,35 +46,16 @@ void dio_init(char port, uint8_t pin, uint8_t direction, uint8_t pull, uint8_t d
     else
         SET_BIT(GPIO_PORT_DIR_R(port_base), pin);  
     
-        /*if (direction == INPUT) {
-    if (pull == PULL_UP) {
-        SET_BIT(GPIO_PORT_PUR_R(port_base), pin);  // Enable pull-up
-        CLEAR_BIT(GPIO_PORT_PDR_R(port_base), pin); // Disable pull-down
-    } else if (pull == PULL_DOWN) {
-        SET_BIT(GPIO_PORT_PDR_R(port_base), pin);  // Enable pull-down
-        CLEAR_BIT(GPIO_PORT_PUR_R(port_base), pin); // Disable pull-up
-    } else {
-        CLEAR_BIT(GPIO_PORT_PUR_R(port_base), pin); // Disable pull-up
-        CLEAR_BIT(GPIO_PORT_PDR_R(port_base), pin); // Disable pull-down
-    }
-}*/
+ 
 
 
     // Set the mode of the pin (digital or analog)
-    if(DIGITAL)
+    if(digital)
         SET_BIT(GPIO_PORT_DEN_R(port_base), pin);
     else
         CLEAR_BIT(GPIO_PORT_DEN_R(port_base), pin);
 
-    /*
-if (digital == DIGITAL) {
-    SET_BIT(GPIO_PORT_DEN_R(port_base), pin);
-    CLEAR_BIT(GPIO_PORT_AMSEL_R(port_base), pin); // Disable analog functionality
-} else {
-    CLEAR_BIT(GPIO_PORT_DEN_R(port_base), pin);
-    SET_BIT(GPIO_PORT_AMSEL_R(port_base), pin);  // Enable analog functionality
-}
-*/
+
 
 }
 
@@ -112,8 +93,11 @@ void dio_writepin(char port, uint8_t pin, uint8_t value) {
 
     // } // ?
 
-
-    value = (value != 0) ? 1 : 0; // Make sure the value is either 0 or 1
+    if(value)
+        SET_BIT(GPIO_PORT_DATA_BITS_R(port_base)[pin], pin);
+    else
+        CLEAR_BIT(GPIO_PORT_DATA_BITS_R(port_base)[pin], pin);
+    //value = (value != 0) ? 1 : 0; // Make sure the value is either 0 or 1
 
     // Write the value to the pin
     GPIO_PORT_DATA_BITS_R(port_base)[pin] = value;
@@ -127,7 +111,7 @@ void dio_writeport(char port, uint8_t value) {
     if (port_base == 0) return; // Invalid port check
 
     
-    value = (value != 0) ? 1 : 0; // Make sure the value is either 0 or 1
+    //value = (value != 0) ? 1 : 0; // Make sure the value is either 0 or 1
 
     // Write value to the port
     GPIO_PORT_DATA_R(port_base) = value;
