@@ -1,22 +1,21 @@
-
 #ifndef DOOR_H
 #define DOOR_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include "magnetic_switch.h"
 #include "DIO.h"
-#include "types.h"
 
-//door states
-#define DOOR_CLOSED 0
-#define DOOR_OPEN   1
-
-uint8_t state; 
-
-
+// Door States
+#define DOOR_OPEN   0
+#define DOOR_CLOSED 1
 
 // Function prototypes
-void door_init(char port, uint8_t pin);
-uint8_t door_get_status(char port, uint8_t pin);
-void door_update_status(char port, uint8_t pin, uint8_t status);
+void door_init(void);
+void door_open(void);
+void door_close(void);
+void door_toggle(void);
+void door_status(void);  // This function checks the door's current status (open/closed)
+void door_magnetic_switch_callback(void);  // Callback for magnetic switch state change
 
 #endif // DOOR_H

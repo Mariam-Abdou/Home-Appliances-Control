@@ -4,7 +4,7 @@
 
 static void (*interrupt_callback)(void) = 0;  // Pointer to the interrupt callback function
 
-uint8_t magnetic_switch_init(uint8_t pin, void (*callback)(void)){
+uint8_t magnetic_switch_init(char port, uint8_t pin, void (*callback)(void)){
 
     dio_init('F', pin, INPUT, PULL_DOWN, DIGITAL);
 
