@@ -1,3 +1,4 @@
+
 #ifndef BITWISE_OPERATIONS_H
 #define BITWISE_OPERATIONS_H
 
@@ -11,7 +12,6 @@
 
 
 #endif // BITWISE_OPERATIONS_H
-
 
 
 

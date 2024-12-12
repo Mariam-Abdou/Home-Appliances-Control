@@ -1,3 +1,4 @@
+
 #include "DIO.h"
 #include "bitwise_operation.h"
 
@@ -115,4 +116,5 @@ void dio_writeport(char port, uint8_t value) {
 
     // Write value to the port
     GPIO_PORT_DATA_R(port_base) = value;
+
 }
