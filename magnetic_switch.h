@@ -1,21 +1,23 @@
 #ifndef MAGNETIC_SWITCH_H
 #define MAGNETIC_SWITCH_H
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "tm4c123gh6pm.h"
+#include "utils.h"
 #include "DIO.h"
 
 // Define possible states for the magnetic switch
-#define MAGNETIC_SWITCH_OPEN  0
-#define MAGNETIC_SWITCH_CLOSED 1
+#define OPEN  0
+#define CLOSED 1
 
-
-#define MAGNETIC_SWITCH_PIN  PIN3
-#define MAGNETIC_SWITCH_PORT GPIO_PORTF_BASE 
+// Register access macros
+#define GPIO_PORT_IS_R(port_base)		GPIO_PORT_REG(port_base, 0x404)
+#define GPIO_PORT_IBE_R(port_base)		GPIO_PORT_REG(port_base, 0x408)
+#define GPIO_PORT_IM_R(port_base)		GPIO_PORT_REG(port_base, 0x410)
+#define GPIO_PORT_ICR_R(port_base)		GPIO_PORT_REG(port_base, 0x41C)
 
 // Function prototype
+uint8_t magnetic_switch_init(uint8_t port, uint8_t pin, void (*callback)(void));
+uint8_t magnetic_switch_get_state(uint8_t port, uint8_t pin);
+void magnetic_switch_handler();
 
-uint8_t magnetic_switch_init(char port, uint8_t pin);
-uint8_t magnetic_switch_get_state(uint8_t pin);
-void magnetic_switch_handler(uint8_t pin);
 #endif // MAGNETIC_SWITCH_H

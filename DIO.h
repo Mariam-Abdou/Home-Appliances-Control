@@ -39,14 +39,16 @@
 #define GPIO_PORTE_BASE  0x40024000
 #define GPIO_PORTF_BASE  0x40025000
 
-// Define the necessary registers for each port
-#define GPIO_PORT_DIR_R(port_base)       (*(volatile uint32_t *)(port_base + 0x400))	// Direction register
-#define GPIO_PORT_DEN_R(port_base)       (*(volatile uint32_t *)(port_base + 0x51C))	// Digital enable register
-#define GPIO_PORT_PUR_R(port_base)       (*(volatile uint32_t *)(port_base + 0x510))	// Pull-up resistor register
-#define GPIO_PORT_LOCK_R(port_base)      (*(volatile uint32_t *)(port_base + 0x520))	// Lock register
-#define GPIO_PORT_CR_R(port_base)        (*(volatile uint32_t *)(port_base + 0x524))	// Commit register
-#define GPIO_PORT_DATA_R(port_base)      (*(volatile uint32_t *)(port_base + 0x3FC))	// Data register
-#define GPIO_PORT_DATA_BITS_R(port_base) ((volatile uint32_t *)(port_base))				// Data bits register
+// Register access macros
+#define GPIO_PORT_REG(port_base, offset) (*(volatile uint32_t *)((port_base) + (offset)))
+
+#define GPIO_PORT_DIR_R(port_base)       GPIO_PORT_REG(port_base, 0x400)
+#define GPIO_PORT_DEN_R(port_base)       GPIO_PORT_REG(port_base, 0x51C)
+#define GPIO_PORT_PUR_R(port_base)       GPIO_PORT_REG(port_base, 0x510)
+#define GPIO_PORT_LOCK_R(port_base)      GPIO_PORT_REG(port_base, 0x520)
+#define GPIO_PORT_CR_R(port_base)        GPIO_PORT_REG(port_base, 0x524)
+#define GPIO_PORT_DATA_R(port_base)      GPIO_PORT_REG(port_base, 0x3FC)
+
 
 // Function prototypes
 void dio_init(uint8_t port, uint8_t pin, uint8_t direction, uint8_t digital);
