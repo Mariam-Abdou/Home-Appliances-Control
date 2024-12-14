@@ -5,34 +5,9 @@ static void (*interrupt_callback)(void) = 0;
 static uint8_t g_port;
 static uint8_t g_pin;
 
-uint32_t get_port_base(uint8_t port) {
-    switch (port) {
-        case 'A':
-		case 'a':
-			return GPIO_PORTA_BASE;
-        case 'B':
-		case 'b':
-			return GPIO_PORTB_BASE;
-        case 'C': 
-		case 'c':
-			return GPIO_PORTC_BASE;
-        case 'D':
-		case 'd':
-			return GPIO_PORTD_BASE;
-        case 'E':
-		case 'e':
-			return GPIO_PORTE_BASE;
-        case 'F':
-		case 'f':
-			return GPIO_PORTF_BASE;
-        default:	// Invalid port
-			return 0;
-    }
-}
-
 void magnetic_switch_init(uint8_t port, uint8_t pin){//, void (*callback)(void)) {
     uint32_t port_base = get_port_base(port);
-    if (port_base == 0) return;
+    if (port_base == 0xFF) return;
 	
     dio_init(port, pin, IN, DIGITAL);
 	dio_pull(port, pin, UP);
@@ -49,20 +24,20 @@ void magnetic_switch_init(uint8_t port, uint8_t pin){//, void (*callback)(void))
     SET_BIT(GPIO_PORT_IM_R(port_base), pin);		// Enable interrupt for the pin
 	
 	switch(port) {
-        case 'A': case 'a': SET_BIT(NVIC_EN0_R, 0);  break;
-        case 'B': case 'b': SET_BIT(NVIC_EN0_R, 1);  break;
-        case 'C': case 'c': SET_BIT(NVIC_EN0_R, 2);  break;
-        case 'D': case 'd': SET_BIT(NVIC_EN0_R, 3);  break;
-        case 'E': case 'e': SET_BIT(NVIC_EN0_R, 4);  break;
-        case 'F': case 'f': SET_BIT(NVIC_EN0_R, 30); break;
+        case PORT_A: SET_BIT(NVIC_EN0_R, 0);  break;
+        case PORT_B: SET_BIT(NVIC_EN0_R, 1);  break;
+        case PORT_C: SET_BIT(NVIC_EN0_R, 2);  break;
+        case PORT_D: SET_BIT(NVIC_EN0_R, 3);  break;
+        case PORT_E: SET_BIT(NVIC_EN0_R, 4);  break;
+        case PORT_F: SET_BIT(NVIC_EN0_R, 30); break;
     }
 
-    //interrupt_callback = callback;    
+    //interrupt_callback = callback;
 }
 
 uint8_t get_magnetic_switch_state(uint8_t port, uint8_t pin) {
     uint32_t port_base = get_port_base(port);
-    if (port_base == 0) return 0xFF;
+    if (port_base == 0xFF) return 0xFF;
     return dio_readpin(port, pin);
 }
 

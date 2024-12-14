@@ -5,6 +5,10 @@
 #include "utils.h"
 #include "DIO.h"
 
+// Define the magnetic switch status
+#define OPEN 1
+#define CLOSED 0
+
 // Register access macros
 #define GPIO_PORT_IS_R(port_base)		GPIO_PORT_REG(port_base, 0x404)
 #define GPIO_PORT_IBE_R(port_base)		GPIO_PORT_REG(port_base, 0x408)
