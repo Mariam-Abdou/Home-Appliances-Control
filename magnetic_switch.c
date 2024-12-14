@@ -15,7 +15,7 @@ void magnetic_switch_init(uint8_t port, uint8_t pin){//, void (*callback)(void))
 	// Store global interrupt details
     g_port = port;
     g_pin = pin;			//let equal port base?
-
+/*
     // Configure GPIO interrupt settings
     CLEAR_BIT(GPIO_PORT_IM_R(port_base), pin);		// Disable interrupt for the pin
     CLEAR_BIT(GPIO_PORT_IS_R(port_base), pin);		// Edge-sensitive interrupt
@@ -30,7 +30,7 @@ void magnetic_switch_init(uint8_t port, uint8_t pin){//, void (*callback)(void))
         case PORT_D: SET_BIT(NVIC_EN0_R, 3);  break;
         case PORT_E: SET_BIT(NVIC_EN0_R, 4);  break;
         case PORT_F: SET_BIT(NVIC_EN0_R, 30); break;
-    }
+    }*/
 
     //interrupt_callback = callback;
 }
