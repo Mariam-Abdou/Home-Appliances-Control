@@ -20,7 +20,6 @@
 // Define the unlock code
 #define GPIO_LOCK_KEY 0x4C4F434B
 
-
 // Define the pins
 #define PIN0 0
 #define PIN1 1
