@@ -4,10 +4,11 @@
 
 // Global Variables
 volatile char received_char = 0;
+static void (*interrupt_callback)(void) = 0;  // Pointer to the interrupt callback function
 
 
 
-void UART0_Init(void) {
+void UART0_Init(void (*callback)(void)) {
 
 
     SET_BIT(SYSCTL_RCGCUART_R, UART0);   // Enable clock for UART0 //todo
@@ -41,31 +42,32 @@ void UART0_Init(void) {
 
     UART0_CC_R = UART_CC_SYS_CLOCK;                 // Use system clock
     SET_BIT(UART0_IM_R, UART_IM_RXIM);              // Enable RX interrupt
-    SET_BIT(NVIC_EN0_R, NVIC_EN0_R_UART0);          // Enable IRQ5 for UART0 in NVIC
+    //SET_BIT(NVIC_EN0_R, NVIC_EN0_R_UART0);          // Enable IRQ5 for UART0 in NVIC //!
     
     SET_BIT(UART0_CTL_R, UART_CTL_EN);
     SET_BIT(UART0_CTL_R, UART_CTL_TXINTEN);
     SET_BIT(UART0_CTL_R, UART_CTL_RXINTEN);
+
+    interrupt_callback = callback;
 
 }
 
 
 // Interrupt Service Routine for UART0
 void UART0_Handler(void) {
-    if (GET_BIT(UART0_MIS_R, UART_MIS_RXMIS)) { // Check if RX interrupt occurred
-        received_char = (char)(UART0_DR_R & 0xFF); // Read the received character
-        UART0_ICR_R |= (1 << 4); // Clear RX interrupt flag
-        SET_BIT(UART0_ICR_R, UART0_ICR_R_RXIC); // Clear RX interrupt
+    if (interrupt_callback != 0) {
+        interrupt_callback();  // Call the user-defined callback function
     }
+
 }
 
 void UART0_TransmitChar(char c) {
-    while (!GET_BIT(UART0_FR_R, UART_FR_TXFF)); // Wait until the transmit FIFO is not full
+    while (GET_BIT(UART0_FR_R, UART_FR_TXFF)); // Wait until the transmit FIFO is not full
     UART0_DR_R = c; // Write the character to the data register
 }
-
+ 
 void UART0_TransmitString(const char *str) {
-    while (*str) {
+    while (*str) { //todo
         UART0_TransmitChar(*str++);
     }
 }

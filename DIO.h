@@ -1,9 +1,11 @@
-
 #ifndef DIO_H
 #define DIO_H
 
 #include <stdint.h>
-#include "TM4C123GH6PM.h"  
+#include "tm4c123gh6pm.h"  
+#include "bitwise_operation.h"
+
+
 
 // Define the direction of a pin
 #define OUTPUT 1

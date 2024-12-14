@@ -1,5 +1,4 @@
 #include "Systick.h"
-#include "bitwise_operation.h"
 
 //D16           D2     D1   D0
 //countFlag clksource inter enable

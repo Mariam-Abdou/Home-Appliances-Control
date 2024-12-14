@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "tm4c123gh6pm.h"
+#include "bitwise_operation.h"
 
 #define SYSTICK_ENABLE 0
 #define SYSTICK_INTERRUPT 1

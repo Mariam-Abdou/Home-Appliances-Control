@@ -1,4 +1,3 @@
-
 #ifndef BITWISE_OPERATIONS_H
 #define BITWISE_OPERATIONS_H
 
@@ -11,7 +10,9 @@
 #define GET_BIT(REG, BIT)     (((REG) >> (BIT)) & 1)
 
 
+
 #endif // BITWISE_OPERATIONS_H
+
 
 
 
