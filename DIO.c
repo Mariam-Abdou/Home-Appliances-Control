@@ -1,8 +1,4 @@
 #include "DIO.h"
-<<<<<<< HEAD
-
-=======
->>>>>>> 5664c5df2f262e92bc652d2d9ac5c1012b67a69e
 
 uint32_t get_port_base(uint8_t port) {
     switch (port) {
@@ -22,7 +18,8 @@ void dio_init(uint8_t port, uint8_t pin, uint8_t direction, uint8_t mode) {
 
     // Enable the clock for the port
     SET_BIT(SYSCTL_RCGCGPIO_R, port);   
-    while ((SYSCTL_PRGPIO_R & (1U << port)) == 0); // Wait for the port to be ready
+    while ((GET_BIT(SYSCTL_PRGPIO_R, port) == 0)); // Wait for the port to be ready
+
 
     // Unlock mechanism for locked pins
     GPIO_PORT_LOCK_R(port_base) = GPIO_LOCK_KEY;	// Unlock the port
