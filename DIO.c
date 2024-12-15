@@ -1,8 +1,4 @@
 #include "DIO.h"
-<<<<<<< HEAD
-
-=======
->>>>>>> 5664c5df2f262e92bc652d2d9ac5c1012b67a69e
 
 uint32_t get_port_base(uint8_t port) {
     switch (port) {
