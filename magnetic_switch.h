@@ -17,7 +17,7 @@
 #define GPIO_PORT_ICR_R(port_base)		GPIO_PORT_REG(port_base, 0x41C)
 
 // Function prototype
-void magnetic_switch_init(uint8_t port, uint8_t pin);//, void (*callback)(void));
+void magnetic_switch_init(uint8_t port, uint8_t pin, void (*callback)(void));
 uint8_t get_magnetic_switch_state(uint8_t port, uint8_t pin);
 void magnetic_switch_handler(void);
 

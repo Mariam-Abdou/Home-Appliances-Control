@@ -3,7 +3,13 @@
 
 #include <stdint.h>
 #include "tm4c123gh6pm.h"  
+<<<<<<< HEAD
+#include "bitwise_operation.h"
+
+
+=======
 #include "utils.h"
+>>>>>>> 5664c5df2f262e92bc652d2d9ac5c1012b67a69e
 
 // Define the direction of a pin
 #define OUT 1
