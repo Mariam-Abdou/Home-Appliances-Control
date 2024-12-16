@@ -5,7 +5,7 @@ static uint8_t door_pin;
 
 void door_init(port, pin) {
 	door_port, door_pin = port, pin;
-    magnetic_switch_init(port, pin, door_callback);    
+    //magnetic_switch_init(port, pin, door_callback);    
 }
 
 // Callback function to handle the magnetic switch state change
