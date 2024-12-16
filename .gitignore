@@ -1,0 +1,10 @@
+*.dep
+*.ewd
+*.ewp
+*.ewt
+*.eww
+
+*.exe
+
+Debug/
+settings/

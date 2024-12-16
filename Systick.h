@@ -2,26 +2,22 @@
 #define SYSTICK_H
 
 #include <stdint.h>
-#include <stdbool.h>
-#include "tm4c123gh6pm.h"
 
+// SysTick Control Register Bit Definitions
 #define SYSTICK_ENABLE 0
 #define SYSTICK_INTERRUPT 1
 #define SYSTICK_CLK_SOURCE 2
 #define SYSTICK_COUNT_FLAG 16
 
-
-
-// Function prototypes
-void SysTick_Init(uint32_t reloadValue);
-void SysTick_Enable(void);
-void SysTick_Disable(void);
-void SysTick_PeriodSet(uint32_t ui32Period);
-uint32_t SysTick_PeriodGet(void);
-uint32_t SysTick_ValueGet(void);
-bool SysTick_Is_Time_Out(void);
-
-// Function prototypes for interrupt mode
-void SysTick_InitInterrupt(uint32_t reloadValue, void (*callback)(void));
+void SysTickInit(uint32_t period, void (*callback)(void));
+void SysTickEnable(void);
+void SysTickDisable(void);
+void SysTickInterruptEnable(void);
+void SysTickPeriodSet(uint32_t ui32Period);
+uint32_t SysTickPeriodGet(void);
+void SysTickCurrentSet(uint32_t value);
+uint32_t SysTickCurrentGet(void);
+uint8_t SysTickIsTimeout(void);
+void SysTickHandler(void);
 
 #endif // SYSTICK_H

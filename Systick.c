@@ -1,65 +1,66 @@
 #include "Systick.h"
-#include "bitwise_operation.h"
-
-//D16           D2     D1   D0
-//countFlag clksource inter enable
+#include "utils.h"
+#include "tm4c123gh6pm.h"
 
 // Pointer to the SysTick callback function
-static void (*SysTick_Callback)(void) = 0;
+static void (*SysTickCallback)(void) = 0;
 
-// Initialize SysTick Timer
-void SysTick_Init(uint32_t reloadValue) {
-    NVIC_ST_CTRL_R = 0;               // Disable SysTick during setup
-    NVIC_ST_RELOAD_R = reloadValue;   // Set reload value
-    NVIC_ST_CURRENT_R = 0;            // Clear current timer value
-    SET_BIT(NVIC_ST_CTRL_R, SYSTICK_ENABLE);
-    SET_BIT(NVIC_ST_CTRL_R, SYSTICK_CLK_SOURCE);
-}
+// Initialize SysTickS Timer
+void SysTickInit(uint32_t period, void (*callback)(void)) {
+	SysTickDisable();					// Disable SysTick during setup
+	SysTickPeriodSet(period);			// Set the reload value
+    SysTickCurrentSet(0);				// Reset the counter
+	SysTickEnable();					// Enable timer
 
-// Initialize SysTick Timer (interrupt mode)
-void SysTick_InitInterrupt(uint32_t reloadValue, void (*callback)(void)) {
-    SysTick_Init(reloadValue);
-    SysTick_Callback = callback;      // Register the callback function
-    SET_BIT(NVIC_ST_CTRL_R, SYSTICK_INTERRUPT);
+	SysTickInterruptEnable();			// Enable interrupt
+    SysTickCallback = callback;			// Register the callback function
 }
 
 // Enable SysTick Timer
-void SysTick_Enable(void) {
+void SysTickEnable(void) {
     SET_BIT(NVIC_ST_CTRL_R, SYSTICK_ENABLE);
     SET_BIT(NVIC_ST_CTRL_R, SYSTICK_CLK_SOURCE);
 }
 
 // Disable SysTick Timer
-void SysTick_Disable(void) {
+void SysTickDisable(void) {
     CLEAR_BIT(NVIC_ST_CTRL_R, SYSTICK_ENABLE);
 }
 
+// Enable SysTick Interrupt
+void SysTickInterruptEnable(void) {
+    SET_BIT(NVIC_ST_CTRL_R, SYSTICK_INTERRUPT);	
+}
+
 // Set the SysTick Timer period
-void SysTick_PeriodSet(uint32_t ui32Period) {
-    NVIC_ST_RELOAD_R = ui32Period - 1; 
+void SysTickPeriodSet(uint32_t period) {
+    NVIC_ST_RELOAD_R = period - 1; 
 }
 
 // Get the SysTick Timer period
-uint32_t SysTick_PeriodGet(void) {
+uint32_t SysTickPeriodGet(void) {
     return NVIC_ST_RELOAD_R + 1;      
 }
 
+// Set the current value of the SysTick Timer
+void SysTickCurrentSet(uint32_t value) {
+    NVIC_ST_CURRENT_R = value;         
+}
+
 // Get the current value of the SysTick Timer
-uint32_t SysTick_ValueGet(void) {
+uint32_t SysTickCurrentGet(void) {
     return NVIC_ST_CURRENT_R;         
 }
 
 // Check if SysTick Timer has timed out
-bool SysTick_Is_Time_Out(void) {
+uint8_t SysTickIsTimeout(void) {
     return GET_BIT(NVIC_ST_CTRL_R, SYSTICK_COUNT_FLAG);
 }
 
-
 // SysTick Interrupt Handler
-void SysTick_Handler(void) {
-    if (SysTick_Callback != 0) {
-        SysTick_Callback();           // Call the user-defined callback function
-    }
+void SysTickHandler(void) {
+    if (SysTickCallback != 0)
+        SysTickCallback();				// Call the user-defined handler function
 }
 
 
