@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
-#include "bitwise_operation.h"
+#include "utils.h"
 
 #define SYSTICK_ENABLE 0
 #define SYSTICK_INTERRUPT 1
@@ -23,8 +23,5 @@ uint8_t SysTick_Is_Time_Out(void);
 void SysTick_Handler(void);
 
 
-
-// Function prototypes for interrupt mode
-void SysTick_InitInterrupt(uint32_t reloadValue, void (*callback)(void));
 
 #endif // SYSTICK_H
