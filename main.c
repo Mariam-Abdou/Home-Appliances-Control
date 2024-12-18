@@ -1,32 +1,35 @@
-#include "magnetic_switch.h"
+#include "temp.h"
+#include "DIO.h"
+#include <stdint.h>
 
-// Example main loop to demonstrate usage
-int main(void) {
 
-    dio_init(PORT_F, 3, OUT, DIGITAL);
-    dio_init(PORT_F, 2, OUT, DIGITAL);    
-    dio_init(PORT_F, 1, OUT, DIGITAL);
+void temperature_callback(void){
+    temp_check_alarm();
+}
 
-    magnetic_switch_init(PORT_B, 0);
-     
-    uint8_t current_door_state, previous_door_state;
-    current_door_state = get_magnetic_switch_state(PORT_B, 0);
+       
+int main()
+{      
+       uint8_t threshold = 200;
+       temp_init(PORT_E, PIN1, PORT_E, PIN5, threshold, temperature_callback);
+       dio_init(PORT_F, 0, IN, DIGITAL);
+       dio_pull(PORT_F, 0, UP);
+       
+       
+       dio_init(PORT_F, 1, OUT, DIGITAL);
+       dio_init(PORT_F, 2, OUT, DIGITAL);
+                  dio_writepin(PORT_F, 1, 0); //red
+                  dio_writepin(PORT_F, 2, 0); //red
+                  dio_writepin(PORT_F, 3, 0); //red
+       
+                  
+      // dio_writepin(PORT_E, PHYSICAL_ALARM_PIN, 0);
+       while(1){ 
+         
 
-    while (1) {
-      previous_door_state = current_door_state;     
-      current_door_state = get_magnetic_switch_state(PORT_B, 0);
-      
-      if (previous_door_state != current_door_state) {
-          dio_writepin(PORT_F, 3, 0);
-          dio_writepin(PORT_F, 2, 0);
-          dio_writepin(PORT_F, 1, 0);
-            
-          if (current_door_state == OPEN)          // OPEN
-                dio_writepin(PORT_F, 3, 1);
-          else if (current_door_state == CLOSED)     // CLOSED
-                dio_writepin(PORT_F, 2, 1);
-          else  dio_writepin(PORT_F, 1, 1);
-      }
-    }
 
+       
+       }
+       
+  return 0;
 }

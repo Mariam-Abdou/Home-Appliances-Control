@@ -18,7 +18,8 @@ void dio_init(uint8_t port, uint8_t pin, uint8_t direction, uint8_t mode) {
 
     // Enable the clock for the port
     SET_BIT(SYSCTL_RCGCGPIO_R, port);   
-    while ((SYSCTL_PRGPIO_R & (1U << port)) == 0); // Wait for the port to be ready
+    while ((GET_BIT(SYSCTL_PRGPIO_R, port) == 0)); // Wait for the port to be ready
+
 
     // Unlock mechanism for locked pins
     GPIO_PORT_LOCK_R(port_base) = GPIO_LOCK_KEY;	// Unlock the port

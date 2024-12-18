@@ -2,6 +2,8 @@
 #define SYSTICK_H
 
 #include <stdint.h>
+#include "tm4c123gh6pm.h"
+#include "utils.h"
 
 // SysTick Control Register Bit Definitions
 #define SYSTICK_ENABLE 0
