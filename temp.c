@@ -5,7 +5,7 @@
 static float alarm_threshold = 30  ;
 
 void temp_init(void) {
-    adc_init();                              // Initialize ADC module
+    adc_init(0);                              // Initialize ADC module
     dio_init(PORT_E , PIN1 , OUT, DIGITAL); 
     dio_init(PORT_E , PHYSICAL_ALARM_PIN, OUT, DIGITAL); // Configure physical alarm pin
     dio_writepin(PORT_E , PHYSICAL_ALARM_PIN, 0);        // Ensure alarm is off initially
