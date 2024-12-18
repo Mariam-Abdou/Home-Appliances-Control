@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
-#include "bitwise_operation.h"
+#include "utils.h"
 
 
 // Define the pins
