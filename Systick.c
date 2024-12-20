@@ -9,7 +9,7 @@ static void (*SysTickCallback)(void) = 0;
 void SysTickInit(uint32_t period, void (*callback)(void)) {
 	SysTickDisable();					// Disable SysTick during setup
 	SysTickPeriodSet(period);			// Set the reload value
-    SysTickCurrentSet(0);				// Reset the counter
+    SysTickCurrentSet(0);				// Reset the counter //todo
 	SysTickEnable();					// Enable timer
 
 	SysTickInterruptEnable();			// Enable interrupt
