@@ -75,11 +75,10 @@ uint8_t UART0_ReceiveChar(void) {
 void UART0_ReceiveString(uint8_t *str, uint32_t max_length) {
     uint32_t i = 0;
     
-    // Keep receiving characters until we hit a newline or reach max length
     while(i < max_length - 1) {  // Leave space for null terminator
         str[i] = UART0_ReceiveChar();
         
-        // If we receive a newline or carriage return, end the string
+        // check for end of message
         if(str[i] == '$') {
             break;
         }
@@ -92,33 +91,3 @@ void UART0_ReceiveString(uint8_t *str, uint32_t max_length) {
 }
 
 
-/*
-
-// Function to receive a complete word over UART
-void UART0_ReceiveString(uint8_t* w) {
-    uint8_t size = sizeof(w);
-
-
-    uint8_t i = 0;
-    uint8_t c = UART0_ReceiveChar();
-    while(c != '\0' && i < size-1){
-        w[i++] = c;
-        c = UART0_ReceiveChar();
-    }
-    w[i] = '\0';
-}
-*/
-
-
-
-/*
-void UART0_Handler(void) {
-    if (UART0_MIS_R & (1 << 4)) { // Check if RX interrupt occurred
-        received_char = (uint8_t)(UART0_DR_R & 0xFF); // Read the received character
-        
-        UART0_TransmitChar(received_char);
-        
-        UART0_ICR_R |= (1 << 4); // Clear RX interrupt flag
-    }
-}
-*/

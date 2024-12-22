@@ -81,8 +81,6 @@ void UART0_ReceiveString(uint8_t *str, uint32_t max_length);
 void GPIO_Init(void);
 
 
-//void UART0_Handler(void);
-
 
 
 

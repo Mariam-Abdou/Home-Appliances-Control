@@ -15,8 +15,8 @@ void Bluetooth_ReceiveData(uint8_t *str, uint32_t max_length) {
     UART0_ReceiveString(str, max_length);
 }
 
-// void Bluetooth_Handler(void){
+void Bluetooth_Handler(void){
 
-//     if (interrupt_callback  != 0)
-//         interrupt_callback();		
-// }
+    if (interrupt_callback  != 0)
+        interrupt_callback();		
+}

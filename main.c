@@ -47,7 +47,7 @@ void systick_callback(void){
 
 void bluetooth_callback(void){
     uint8_t received_string[MAX_WORD_LENGTH]; 
-    Bluetooth_ReceiveString(received_string, MAX_WORD_LENGTH);
+    Bluetooth_ReceiveData(received_string, MAX_WORD_LENGTH);
     
     if(received_string[0] == 'h') {  
         uint16_t threshold = atoi((char*)&received_string[1]);  // Skip the 'h' by using &received_string[1]
@@ -63,15 +63,16 @@ void bluetooth_callback(void){
 
 
 
+void callback(void){
+    dio_writepin(PORT_F, 1, 1);
+}
 
-
-       
 int main()
 {      
 
 
     // initializing bluetooth module
-    Bluetooth_Init(0); 
+    Bluetooth_Init(callback); 
 
     // initializing systick
     SysTickInit(16000000, systick_callback);
@@ -90,19 +91,25 @@ int main()
     
  
 
-    
-    // dio_init(PORT_F, 3, OUT, DIGITAL);
-    // dio_init(PORT_F, 2, OUT, DIGITAL);    
-    // dio_init(PORT_F, 1, OUT, DIGITAL);
-    
-    
-    // dio_writepin(PORT_F, 1, 0);
-    // dio_writepin(PORT_F, 2, 0);
-    // dio_writepin(PORT_F, 3, 0);
         
-        
+    dio_init(PORT_F, 3, OUT, DIGITAL);
+    dio_init(PORT_F, 2, OUT, DIGITAL);    
+    dio_init(PORT_F, 1, OUT, DIGITAL);
+
+    
+    dio_writepin(PORT_F, 1, 0);
+    dio_writepin(PORT_F, 2, 0);
+    dio_writepin(PORT_F, 3, 0);
+     
+
+    
+    uint8_t received_string[MAX_WORD_LENGTH];          
     while(1) {
-        
+
+        Bluetooth_ReceiveData(received_string, MAX_WORD_LENGTH);
+        if(received_string[0] == 'h')
+              dio_writepin(PORT_F, 2, 1);
+          
     }
 
        
