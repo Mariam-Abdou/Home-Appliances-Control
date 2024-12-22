@@ -43,14 +43,10 @@ uint8_t get_magnetic_switch_state(uint8_t port, uint8_t pin) {
 
 // GPIO Port ISR
 void magnetic_switch_handler(void) {
-    uint32_t port_base = get_port_base(g_port);
 
-	// Check if interrupt was triggered
-    if (GET_BIT(GPIO_PORT_RIS_R(port_base), g_pin)) {
-		// Set interrupt clear register (ICR) to clear the interrupt flag
-        SET_BIT(GPIO_PORT_ICR_R(port_base), g_pin);
+       GPIO_PORT_ICR_R(g_port) |= (1 << g_pin); //todo
         
-        if (interrupt_callback != 0)
+        if (interrupt_callback  != 0)
             interrupt_callback();		// Call the user-defined callback function
-    }
+    
 }
