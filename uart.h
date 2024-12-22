@@ -6,6 +6,8 @@
 #include "utils.h"
 
 
+#define MAX_WORD_LENGTH 16
+
 #define UART0 0    
 
 #define PORT_A 0 
@@ -21,9 +23,10 @@
 
 
 // UART Control Register (CTL)
-#define UART_CTL_UARTEN 0                      // UART Enable
+#define UART_CTL_EN 0                      // UART Enable
 #define UART_CTL_TXEN 8                         // Transmit Enable
 #define UART_CTL_RXEN 9                         // Receive Enable
+
 
 // setting Baud Rate
 #define UART0_BAUD_INT 104          // Integer part for 9600 baud
@@ -34,9 +37,9 @@
 #define UART_LCRH_WLEN_6 (0x1 << 5)  // 6-bit word length 
 #define UART_LCRH_WLEN_7 (0x2 << 5)  // 7-bit word length 
 #define UART_LCRH_WLEN_8 (0x3 << 5)  // 8-bit word length 
-#define UART_LCRH_FIFO 4            // FIFO
-#define UART_LCRH_STOP_BIT 3        // stop bit 
-#define UART_LCRH_PEN 1             // Parity enable
+#define UART_LCRH_FIFO 4             // FIFO
+#define UART_LCRH_STOP_BIT 3         // stop bit 
+#define UART_LCRH_PARITY 1           // Parity enable
 
 // NVIC Interrupt Enable Register 0 (EN0) 
 #define NVIC_EN0_R_UART0 5  // Enable IRQ5 for UART0 interrupt
@@ -70,11 +73,13 @@
 
 
 // Function Prototypes
-void UART0_Init(void (*callback)(void));
-void UART0_TransmitChar(char c);
-void UART0_TransmitString(const char *str);
+void UART0_Init();
+void UART0_TransmitChar(uint8_t c);
+void UART0_TransmitString(const uint8_t *str);
+uint8_t UART0_ReceiveChar(void);
+//void UART0_ReceiveString(uint8_t* word);
 void GPIO_Init(void);
-void UART0_Handler(void);
+//void UART0_Handler(void);
 
 
 

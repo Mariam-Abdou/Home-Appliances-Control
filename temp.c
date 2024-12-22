@@ -4,14 +4,14 @@
 
 static float alarm_threshold = 30  ;
 
-void temp_init(void) {
+void temp_init(uint8_t port, uint8_t pin, uint8_t port_buzz, uint8_t pin_buzz, uint16_t threshold, void (*callback)(void)) {
     adc_init(0);                              // Initialize ADC module
     dio_init(PORT_E , PIN1 , OUT, DIGITAL); 
     dio_init(PORT_E , PHYSICAL_ALARM_PIN, OUT, DIGITAL); // Configure physical alarm pin
     dio_writepin(PORT_E , PHYSICAL_ALARM_PIN, 0);        // Ensure alarm is off initially
 }
 
-float temp_get_reading(void) {
+uint16_t temp_get_reading(void) {
     uint16_t adc_value = adc_read();
     // Convert ADC value to temperature (example: assume 0-1023 maps to 0-100°C)
     float temperature = (adc_value * 3300 / 4096);
