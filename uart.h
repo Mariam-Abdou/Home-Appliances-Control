@@ -77,8 +77,10 @@ void UART0_Init();
 void UART0_TransmitChar(uint8_t c);
 void UART0_TransmitString(const uint8_t *str);
 uint8_t UART0_ReceiveChar(void);
-//void UART0_ReceiveString(uint8_t* word);
+void UART0_ReceiveString(uint8_t *str, uint32_t max_length);
 void GPIO_Init(void);
+
+
 //void UART0_Handler(void);
 
 
