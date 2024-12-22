@@ -9,7 +9,7 @@
 
 #define GET_BIT(REG, BIT)     (((REG) >> (BIT)) & 1U)
 
-#define WRITE_BYTE(REG, VALUE)     ((REG) = VALUE))
+#define WRITE_BYTE(REG, VALUE)     ((REG) = VALUE)
 
 #endif // BITWISE_OPERATIONS_H
 
