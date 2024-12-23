@@ -1,8 +1,8 @@
 #include "lamp_plug.h"
 #include "tm4c123gh6pm.h"
-#include "bitwise_operation.h"
+#include "utils.h"
 #include "uart.h"
-#include "dio.h"
+#include "DIO.h"
 
 
 void lamp_init(uint8_t port, uint8_t pin) {
