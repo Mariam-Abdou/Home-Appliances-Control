@@ -5,7 +5,7 @@
 void Bluetooth_Init(void (*callback)(void));
 
 void Bluetooth_SendData(const uint8_t* data);
-uint8_t Bluetooth_ReceiveData(void);
+void Bluetooth_ReceiveData(uint8_t *str, uint32_t max_length);
 
 void Bluetooth_Handler(void);
 

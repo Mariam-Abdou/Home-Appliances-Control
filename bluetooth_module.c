@@ -11,13 +11,11 @@ void Bluetooth_SendData(const uint8_t* data){
     UART0_TransmitString(data);
 }
 
-uint8_t Bluetooth_ReceiveData(void){
-    return UART0_ReceiveChar();
+void Bluetooth_ReceiveData(uint8_t *str, uint32_t max_length) {
+    UART0_ReceiveString(str, max_length);
 }
 
-
 void Bluetooth_Handler(void){
-    // don't forget to clear the interrupt
 
     if (interrupt_callback  != 0)
         interrupt_callback();		
