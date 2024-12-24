@@ -75,10 +75,11 @@ uint8_t UART0_ReceiveChar(void) {
 void UART0_ReceiveString(uint8_t *str, uint32_t max_length) {
     uint32_t i = 0;
     
+    // Keep receiving characters until we hit a newline or reach max length
     while(i < max_length - 1) {  // Leave space for null terminator
         str[i] = UART0_ReceiveChar();
         
-        // check for end of message
+        
         if(str[i] == '$') {
             break;
         }

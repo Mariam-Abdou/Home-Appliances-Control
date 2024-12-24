@@ -21,11 +21,13 @@
 #define GPIO_PCTL_PA1_UART0      4 // PA1 as UART0 TX
 
 
+// NVIC Interrupt Enable Register 0 (EN0) 
+#define NVIC_EN0_R_UART0 5  // Enable IRQ5 for UART0 interrupt
 
 // UART Control Register (CTL)
 #define UART_CTL_EN 0                      // UART Enable
-#define UART_CTL_TXEN 8                         // Transmit Enable
-#define UART_CTL_RXEN 9                         // Receive Enable
+#define UART_CTL_TXEN 8                    // Transmit Enable
+#define UART_CTL_RXEN 9                    // Receive Enable
 
 
 // setting Baud Rate
@@ -41,8 +43,6 @@
 #define UART_LCRH_STOP_BIT 3         // stop bit 
 #define UART_LCRH_PARITY 1           // Parity enable
 
-// NVIC Interrupt Enable Register 0 (EN0) 
-#define NVIC_EN0_R_UART0 5  // Enable IRQ5 for UART0 interrupt
 
 // UART0 Interrupt Mask Register (IM)
 #define UART0_IM_R_RXIM 4  // RX interrupt

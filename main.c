@@ -6,6 +6,8 @@
 #include "bluetooth_module.h"
 #include "magnetic_switch.h"
 #include "temp.h"
+#include "lamp_plug.h"
+
 
 
 uint8_t mag_port = PORT_B;
@@ -15,7 +17,7 @@ uint8_t mag_pin = PIN4;
 uint8_t previous_magnetic_switch_state = 0xFF;
 
 void magnetic_switch_callback(void){
-  uint8_t current_magnetic_switch_state = get_magnetic_switch_state(PORT_B, 4);
+  uint8_t current_magnetic_switch_state = get_magnetic_switch_state(mag_port, mag_pin);
   if(current_magnetic_switch_state == previous_magnetic_switch_state ) return;
   if(current_magnetic_switch_state  == 1){
         Bluetooth_SendData("o");
@@ -35,7 +37,7 @@ void magnetic_switch_callback(void){
 
 void systick_callback(void){
     uint16_t temperature = temp_check_alarm();
-
+    
     char str[10];  
     sprintf(str, "t%d", temperature);     // Convert integer to string
   
@@ -44,6 +46,14 @@ void systick_callback(void){
 
 }
 
+uint8_t current_lamp_switch_state = 0;
+uint8_t current_plug_switch_state = 0;
+
+
+uint8_t lamp_port = PORT_F; 
+uint8_t lamp_pin = 2; 
+uint8_t plug_port = PORT_F; 
+uint8_t plug_pin = 3; 
 
 void bluetooth_callback(void){
     uint8_t received_string[MAX_WORD_LENGTH]; 
@@ -58,14 +68,38 @@ void bluetooth_callback(void){
           dio_writepin(PORT_F, 2, 1); 
         else
           dio_writepin(PORT_F, 3, 1); 
+    } 
+    else if(received_string[0] == 's') { 
+      if(received_string[1] == 'l') { 
+        if(received_string[2] == '1') 
+          set_app_lamp_switch_state(SWITCH_ON);
+        else if(received_string[2] == '0') 
+          set_app_lamp_switch_state(SWITCH_OFF); 
+         lamp_update_state(lamp_port, lamp_pin, current_lamp_switch_state);
+      }
+      else if(received_string[1] == 'p') { 
+        if(received_string[2] == '1') 
+          set_app_plug_switch_state(SWITCH_ON);
+        else if(received_string[2] == '0') 
+          set_app_plug_switch_state(SWITCH_OFF); 
+         plug_update_state(plug_port, plug_pin, current_plug_switch_state);
+      }
+      
     }
 }
 
 
 
 void callback(void){
-    dio_writepin(PORT_F, 1, 1);
+        uint8_t received_string[MAX_WORD_LENGTH]; 
+        Bluetooth_ReceiveData(received_string, MAX_WORD_LENGTH);
+        if(received_string[0] == 'r') 
+            dio_writepin(PORT_F, 1, 1);
+            dio_writepin(PORT_F, 3, 1);
+      
 }
+
+
 
 int main()
 {      
@@ -86,11 +120,54 @@ int main()
     uint8_t temp_pin = PIN3;
     uint8_t buzzer_port = PORT_E;
     uint8_t buzzer_pin = PIN5;
-    temp_init(temp_port, temp_pin, buzzer_port, buzzer_pin, threshold);
-
+    temp_init(temp_port, temp_pin, threshold);
+    buzzer_init( buzzer_port, buzzer_pin);
     
  
+    // initializing lamp 
+    uint8_t lamp_port = PORT_F; 
+    uint8_t lamp_pin = 2; 
+    lamp_init(lamp_port, lamp_pin);
+    
+    // initializing plug
+    uint8_t plug_port = PORT_F; 
+    uint8_t plug_pin = 3; 
+    plug_init(plug_port, plug_pin);
+    
+    // initializing switches
+    
+    uint8_t switch_lamp_port = PORT_F; 
+    uint8_t switch_lamp_pin = 4; 
+    switch_init(switch_lamp_port, switch_lamp_pin);
+    
+    uint8_t switch_plug_port = PORT_F; 
+    uint8_t switch_plug_pin = 0; 
+    switch_init(switch_plug_port, switch_plug_pin);
 
+
+
+
+
+    // uint8_t switch_state, app_signal, switch_plug_state, app_signal2;
+     
+    
+    
+    
+    
+    
+// check initial values on ports 
+    
+    if(get_magnetic_switch_state(mag_port, mag_pin))
+        Bluetooth_SendData("io");
+    else
+        Bluetooth_SendData("ic");
+    
+    
+    
+    
+    
+    
+    
         
     dio_init(PORT_F, 3, OUT, DIGITAL);
     dio_init(PORT_F, 2, OUT, DIGITAL);    
@@ -101,14 +178,77 @@ int main()
     dio_writepin(PORT_F, 2, 0);
     dio_writepin(PORT_F, 3, 0);
      
-
     
-    uint8_t received_string[MAX_WORD_LENGTH];          
+    
+    
+    
+    uint8_t received_string[MAX_WORD_LENGTH]; 
+    
+    
+    
+    
+    
+    uint8_t previous_lamp_state = current_lamp_switch_state;
+    uint8_t previous_plug_state = current_plug_switch_state;
+    
+    
     while(1) {
+    
+    current_lamp_switch_state = switch_get(switch_lamp_port, switch_lamp_pin);
+    current_plug_switch_state = switch_get(switch_plug_port, switch_plug_pin);
+     
+    
+    
+    if(current_lamp_switch_state != previous_lamp_state){
+        lamp_update_state(lamp_port, lamp_pin, current_lamp_switch_state);
+        previous_lamp_state= current_lamp_switch_state;
+    }
+    if(current_plug_switch_state != previous_plug_state){
+        plug_update_state(plug_port, plug_pin, current_plug_switch_state);
+        previous_plug_state= current_plug_switch_state;
+    }
+      
+    
 
-        Bluetooth_ReceiveData(received_string, MAX_WORD_LENGTH);
-        if(received_string[0] == 'h')
-              dio_writepin(PORT_F, 2, 1);
+       //bluetooth_callback();
+
+      
+      
+      Bluetooth_ReceiveData(received_string, MAX_WORD_LENGTH);
+    
+if(received_string[0] == 's') { 
+      if(received_string[1] == 'l') { 
+        if(received_string[2] == '1') 
+          set_app_lamp_switch_state(SWITCH_ON);
+        else if(received_string[2] == '0') 
+          set_app_lamp_switch_state(SWITCH_OFF); 
+         lamp_update_state(lamp_port, lamp_pin, current_lamp_switch_state);
+      }
+      else if(received_string[1] == 'p') { 
+        if(received_string[2] == '1') 
+          set_app_plug_switch_state(SWITCH_ON);
+        else if(received_string[2] == '0') 
+          set_app_plug_switch_state(SWITCH_OFF); 
+         plug_update_state(plug_port, plug_pin, current_plug_switch_state);
+      }
+      
+      
+}
+      
+      
+      
+//        Bluetooth_ReceiveData(received_string, MAX_WORD_LENGTH);
+//        
+//        if(received_string[0] == 'h') {  
+//            uint16_t threshold = atoi((char*)&received_string[1]);  // Skip the 'h' by using &received_string[1]
+//            temp_set_alarm_threshold(threshold);
+//            if (threshold == 3)
+//              dio_writepin(PORT_F, 1, 1); 
+//            else if(threshold == 23)
+//              dio_writepin(PORT_F, 2, 1); 
+//            else
+//              dio_writepin(PORT_F, 3, 1); 
+//        }
           
     }
 

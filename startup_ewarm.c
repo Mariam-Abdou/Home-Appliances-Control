@@ -47,7 +47,7 @@ extern void SysTickHandler(void);
 //extern void UART0_Handler(void);
 extern void magnetic_switch_handler(void);
 extern void Bluetooth_Handler(void);
-
+extern void callback(void);
 //*****************************************************************************
 //
 // The entry point for the application startup code.
