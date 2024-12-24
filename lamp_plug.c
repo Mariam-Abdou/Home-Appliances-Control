@@ -2,7 +2,7 @@
 #include "tm4c123gh6pm.h"
 #include "utils.h"
 #include "uart.h"
-#include "dio.h"
+#include "DIO.h"
 
 
 
