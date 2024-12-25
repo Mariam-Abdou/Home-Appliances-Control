@@ -33,7 +33,7 @@ uint16_t temp_get_reading(void) {
     uint16_t adc_value = adc_read();
 
     uint16_t temperature = (adc_value * 3300 / 4096);
-    temperature /= 10;
+    //temperature /= 10;
     
     return temperature;
 }

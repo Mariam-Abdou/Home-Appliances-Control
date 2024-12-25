@@ -2,7 +2,7 @@
 #include "tm4c123gh6pm.h"
 #include "utils.h"
 #include "uart.h"
-#include "DIO.h"
+#include "dio.h"
 
 
 
@@ -28,9 +28,6 @@ void lamp_set(uint8_t port, uint8_t pin, uint8_t state) {
 }
 
 void lamp_update_state(uint8_t port, uint8_t pin, uint8_t switch_state) { 
-    uint8_t t = app_lamp_switch_state;
-    uint8_t t2 = switch_state;
-    
     uint8_t lamp_state = switch_state ^ app_lamp_switch_state;  
     lamp_set(port, pin, lamp_state);   
 }
@@ -53,6 +50,7 @@ void plug_set(uint8_t port, uint8_t pin, uint8_t state) {
 }
 
 void plug_update_state(uint8_t port, uint8_t pin, uint8_t switch_state) {
+  uint8_t t = app_plug_switch_state;
     uint8_t plug_state = switch_state ^ app_plug_switch_state; 
     plug_set(port, pin, plug_state);
 }
@@ -61,7 +59,7 @@ void plug_update_state(uint8_t port, uint8_t pin, uint8_t switch_state) {
 void switch_init(uint8_t port, uint8_t pin) {
     dio_init(port, pin, IN, DIGITAL);
     dio_pull(port, pin, UP); 
-    dio_writepin(port, pin, SWITCH_OFF);
+    //dio_writepin(port, pin, SWITCH_OFF);//?
 }
 
 uint8_t switch_get(uint8_t port, uint8_t pin) {

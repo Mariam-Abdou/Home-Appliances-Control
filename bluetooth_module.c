@@ -15,6 +15,12 @@ void Bluetooth_ReceiveData(uint8_t *str, uint32_t max_length) {
     UART0_ReceiveString(str, max_length);
 }
 
+
+uint8_t Bluetooth_ReceiveChar() {
+    return UART0_ReceiveChar();
+}
+
+
 void Bluetooth_Handler(void){
 
     if(GET_BIT(UART0_MIS_R, UART0_MIS_R_RXMIS)) {  
